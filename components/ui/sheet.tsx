@@ -67,9 +67,7 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close className="absolute right-4 top-0 rounded-sm h-20">
-        <Button variant="default" size="icon">
-          <Cross2Icon className="h-4 w-4" />
-        </Button>
+        <Cross2Icon className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>

@@ -45,7 +45,10 @@ const SheetNavMobile = () => {
           <span className="sr-only">Toggle NavBar</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col justify-between items-center">
+      <SheetContent
+        id="Sheet_Content"
+        className="flex flex-col justify-between items-center"
+      >
         <SheetHeader>
           <SheetTitle></SheetTitle>
           <SheetDescription></SheetDescription>
