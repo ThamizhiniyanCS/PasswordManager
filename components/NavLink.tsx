@@ -21,11 +21,11 @@ const NavLink = ({
       key={name}
       href={path}
       className={clsx(
-        "w-28 h-12 flex justify-center items-center cursor-pointer rounded-full mx-0.5",
+        "w-full h-14 flex justify-center items-center cursor-pointer rounded-full mx-0.5",
         {
           "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-white":
             notStartsWith ? pathname === path : pathname.startsWith(path),
-          "hover:bg-slate-200": notStartsWith
+          "lg:hover:bg-slate-200": notStartsWith
             ? pathname !== path
             : !pathname.startsWith(path),
         }
