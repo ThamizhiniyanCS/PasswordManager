@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 import { cn } from "@/lib/utils";
 import NavBar from "@/components/NavBar";
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           <NavBar />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
