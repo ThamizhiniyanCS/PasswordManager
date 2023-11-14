@@ -34,7 +34,7 @@ const DashboardBreadCrumbs = () => {
           <p
             className={clsx("px-1 ", {
               "text-primary": pathname.endsWith(path.name),
-              "text-slate-500": !pathname.endsWith(path.name),
+              "text-secondary-foreground/70": !pathname.endsWith(path.name),
             })}
           >
             {path.name}
