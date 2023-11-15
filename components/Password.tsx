@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
   Card,
@@ -46,16 +47,48 @@ import clsx from "clsx";
 
 const Password = () => {
   const { toast } = useToast();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const [dialogState, setDialogState] = useState(false);
+  const params = new URLSearchParams(searchParams);
+
+  const idParam__Handler = (password_id?: string) => {
+    if (password_id) {
+      params.set("id", password_id);
+    } else {
+      params.delete("id");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   let password_score = 1;
 
+  useEffect(() => {
+    const urlparams = new URLSearchParams(searchParams);
+    if (urlparams.has("id")) {
+      setDialogState(true);
+    } else {
+      setDialogState(false);
+    }
+  }, [searchParams]);
+
   return (
-    <Dialog>
+    <Dialog
+      open={dialogState}
+      onOpenChange={(state) => {
+        if (!state) idParam__Handler();
+        setDialogState(state);
+      }}
+    >
       <Card className="my-2">
         <div className="w-full flex justify-between items-center">
           <DialogTrigger className="w-[calc(100%-64px)] border-none">
-            <CardContent className="w-full flex flex-col items-start p-0 pl-2 h-36 justify-evenly rounded-l-xl">
+            <CardContent
+              className="w-full flex flex-col items-start p-0 pl-2 h-36 justify-evenly rounded-l-xl"
+              onClick={() => idParam__Handler("someone's id")}
+            >
               <div className="h-10 flex flex-col justify-evenly items-start">
                 <CardDescription className="text-xs ">
                   Account Description
@@ -149,9 +182,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[80%] items-center">
-            <Label htmlFor="username" className="text-xs text-primary">
-              Username
-            </Label>
+            <p className="text-xs text-primary">Username</p>
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
               <p
                 onClick={() => {
@@ -185,9 +216,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[80%] items-center">
-            <Label htmlFor="password" className="text-xs text-primary">
-              Password
-            </Label>
+            <p className="text-xs text-primary">Password</p>
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
               <p
                 className=""
@@ -222,9 +251,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[80%] items-center">
-            <Label htmlFor="username" className="text-xs text-primary">
-              Website URL
-            </Label>
+            <p className="text-xs text-primary">Website URL</p>
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
               <p
                 onClick={() => {
@@ -255,9 +282,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[80%] items-center">
-            <Label htmlFor="created_on" className="text-xs text-primary">
-              Password Strength
-            </Label>
+            <p className="text-xs text-primary">Password Strength</p>
             <p>
               1 <span className="text-xs text-secondary-foreground">/5</span>
             </p>
@@ -282,9 +307,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[90%] items-center">
-            <Label htmlFor="created_on" className="text-xs text-primary">
-              Created on
-            </Label>
+            <p className="text-xs text-primary">Created on</p>
             <p>Mar 25 2015</p>
           </div>
         </div>
@@ -295,9 +318,7 @@ const Password = () => {
           </span>
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[90%] items-center">
-            <Label htmlFor="created_on" className="text-xs text-primary">
-              Last Updated
-            </Label>
+            <p className="text-xs text-primary">Last Updated</p>
             <p>Mar 25 2015</p>
           </div>
         </div>
