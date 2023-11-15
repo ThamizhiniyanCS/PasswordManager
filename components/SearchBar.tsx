@@ -14,8 +14,13 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import Link from "next/link";
+import { searchPasswordType } from "@/lib/typeDefinitions";
 
-const SearchBar = () => {
+type Props = {
+  passwords: searchPasswordType[];
+};
+
+const SearchBar = ({ passwords }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -54,16 +59,24 @@ const SearchBar = () => {
           <CommandEmpty>No results found.</CommandEmpty>
 
           <CommandGroup heading="Passwords">
-            <Link href={`/dashboard/passwords?id=1`}>
-              <CommandItem className="bg-transparent">
-                <span className="full flex justify-start items-center h-5">
-                  <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
-                    password
+            {passwords.map((password) => (
+              <Link
+                key={`${password.id}`}
+                href={{
+                  pathname: "/dashboard/passwords",
+                  query: { id: password.id },
+                }}
+              >
+                <CommandItem className="bg-transparent">
+                  <span className="full flex justify-start items-center h-5">
+                    <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
+                      password
+                    </span>
+                    {password.account_description}
                   </span>
-                  Passwords
-                </span>
-              </CommandItem>
-            </Link>
+                </CommandItem>
+              </Link>
+            ))}
           </CommandGroup>
           <CommandSeparator />
 

@@ -5,14 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 import {
   Dialog,
@@ -22,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 
@@ -39,13 +31,22 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { useToast } from "@/components/ui/use-toast";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { ToastAction } from "./ui/toast";
 import { Separator } from "./ui/separator";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import clsx from "clsx";
+import { extendedPasswordType } from "@/lib/typeDefinitions";
 
-const Password = () => {
+const Password = ({
+  _id,
+  account_description,
+  username,
+  password,
+  url,
+  password_score,
+  createdAt,
+  updatedAt,
+}: extendedPasswordType) => {
   const { toast } = useToast();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -63,16 +64,40 @@ const Password = () => {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  let password_score = 1;
-
   useEffect(() => {
     const urlparams = new URLSearchParams(searchParams);
-    if (urlparams.has("id")) {
+    if (urlparams.has("id") && urlparams.get("id") === _id) {
       setDialogState(true);
     } else {
       setDialogState(false);
     }
-  }, [searchParams]);
+  }, [searchParams, _id]);
+
+  const copyToClipboard = (contentToCopy: string, name: string) => {
+    navigator.clipboard
+      .writeText(contentToCopy)
+      .then(() =>
+        toast({
+          title: `${name} Copied Successfully`,
+        })
+      )
+      .catch((error) => {
+        console.log(error);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with copying to clipboard.",
+          action: (
+            <ToastAction
+              altText="Try again"
+              onClick={() => copyToClipboard(contentToCopy, name)}
+            >
+              Try again
+            </ToastAction>
+          ),
+        });
+      });
+  };
 
   return (
     <Dialog
@@ -87,20 +112,20 @@ const Password = () => {
           <DialogTrigger className="w-[calc(100%-64px)] border-none">
             <CardContent
               className="w-full flex flex-col items-start p-0 pl-2 h-36 justify-evenly rounded-l-xl"
-              onClick={() => idParam__Handler("someone's id")}
+              onClick={() => idParam__Handler(_id)}
             >
               <div className="h-10 flex flex-col justify-evenly items-start">
                 <CardDescription className="text-xs ">
                   Account Description
                 </CardDescription>
                 <CardDescription className="text-primary text-md">
-                  lorem
+                  {account_description}
                 </CardDescription>
               </div>
               <div className="h-10 flex flex-col justify-evenly items-start">
                 <CardDescription className="text-xs ">Username</CardDescription>
                 <CardDescription className="text-primary text-md">
-                  ipsum
+                  {username}
                 </CardDescription>
               </div>
               <div className="h-10 flex flex-col justify-evenly items-start">
@@ -114,25 +139,33 @@ const Password = () => {
 
           <div className="flex ">
             <CardContent className="flex flex-col items-center p-0 h-36 justify-evenly">
-              <Link
-                href=""
-                target="_blank"
-                className="h-10 flex flex-col justify-evenly items-center"
-              >
-                <Button variant="outline" size="icon" className="text-primary">
+              {url ? (
+                <Link
+                  href={{ pathname: url }}
+                  target="_blank"
+                  className="h-10 flex flex-col justify-evenly items-center"
+                >
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="text-primary"
+                  >
+                    <span className="material-symbols-outlined">
+                      open_in_new
+                    </span>
+                  </Button>
+                </Link>
+              ) : (
+                <Button variant="outline" disabled size="icon" className="">
                   <span className="material-symbols-outlined">open_in_new</span>
                 </Button>
-              </Link>
+              )}
               <div className="h-10 flex flex-col justify-evenly items-center">
                 <Button
                   variant="outline"
                   size="icon"
                   className="text-primary"
-                  onClick={() => {
-                    toast({
-                      title: "Username Copied Successfully",
-                    });
-                  }}
+                  onClick={() => copyToClipboard(username, "Username")}
                 >
                   <span className="material-symbols-outlined">
                     content_copy
@@ -144,11 +177,7 @@ const Password = () => {
                   variant="outline"
                   size="icon"
                   className="text-primary"
-                  onClick={() => {
-                    toast({
-                      title: "Password Copied Successfully",
-                    });
-                  }}
+                  onClick={() => copyToClipboard(password, "Password")}
                 >
                   <span className="material-symbols-outlined">
                     content_copy
@@ -173,7 +202,7 @@ const Password = () => {
       <DialogContent className="w-[90%] max-w-[90vw] rounded-xl">
         <DialogHeader>
           <DialogTitle>Details</DialogTitle>
-          <DialogDescription>Account Descripton</DialogDescription>
+          <DialogDescription>{account_description}</DialogDescription>
         </DialogHeader>
 
         <div className="w-full flex justify-between items-center rounded-full p-2 border-primary border-[1px]">
@@ -184,14 +213,8 @@ const Password = () => {
           <div className="w-[80%] items-center">
             <p className="text-xs text-primary">Username</p>
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
-              <p
-                onClick={() => {
-                  toast({
-                    title: "Username Copied Successfully",
-                  });
-                }}
-              >
-                Thamizhiniyan
+              <p onClick={() => copyToClipboard(username, "Username")}>
+                {username}
               </p>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
@@ -200,11 +223,7 @@ const Password = () => {
             variant="outline"
             size="icon"
             className="text-primary rounded-full"
-            onClick={() => {
-              toast({
-                title: "Username Copied Successfully",
-              });
-            }}
+            onClick={() => copyToClipboard(username, "Username")}
           >
             <span className="material-symbols-outlined">content_copy</span>
           </Button>
@@ -220,15 +239,9 @@ const Password = () => {
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
               <p
                 className=""
-                onClick={() => {
-                  toast({
-                    title: "Password Copied Successfully",
-                  });
-                }}
+                onClick={() => copyToClipboard(password, "Password")}
               >
-                {isVisible
-                  ? "ThamizhiniyanThamizhiniyanThamizhiniyanThamizhiniy"
-                  : "******"}
+                {isVisible ? password : "******"}
               </p>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
@@ -253,27 +266,30 @@ const Password = () => {
           <div className="w-[80%] items-center">
             <p className="text-xs text-primary">Website URL</p>
             <ScrollArea className="max-w-[150px] xs:max-w-[300px]">
-              <p
-                onClick={() => {
-                  toast({
-                    title: "Website URL Copied Successfully",
-                  });
-                }}
-              >
-                https://someone.at.sometime/
-              </p>
+              <p onClick={() => copyToClipboard(url, "Website URL")}>{url}</p>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-          <Link href="https://someone.at.sometime/" target="_blank">
+          {url ? (
+            <Link href={{ pathname: url }} target="_blank">
+              <Button
+                variant="outline"
+                size="icon"
+                className="text-primary rounded-full"
+              >
+                <span className="material-symbols-outlined">open_in_new</span>
+              </Button>
+            </Link>
+          ) : (
             <Button
               variant="outline"
               size="icon"
-              className="text-primary rounded-full"
+              className="rounded-full"
+              disabled
             >
               <span className="material-symbols-outlined">open_in_new</span>
             </Button>
-          </Link>
+          )}
         </div>
 
         <div className="w-full flex justify-between items-center rounded-full p-2 border-primary border-[1px]">
@@ -284,7 +300,8 @@ const Password = () => {
           <div className="w-[80%] items-center">
             <p className="text-xs text-primary">Password Strength</p>
             <p>
-              1 <span className="text-xs text-secondary-foreground">/5</span>
+              {password_score}{" "}
+              <span className="text-xs text-secondary-foreground">/5</span>
             </p>
           </div>
           <span
@@ -308,7 +325,7 @@ const Password = () => {
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[90%] items-center">
             <p className="text-xs text-primary">Created on</p>
-            <p>Mar 25 2015</p>
+            <p>{createdAt}</p>
           </div>
         </div>
 
@@ -319,12 +336,17 @@ const Password = () => {
           <Separator orientation="vertical" className="mx-1 " />
           <div className="w-[90%] items-center">
             <p className="text-xs text-primary">Last Updated</p>
-            <p>Mar 25 2015</p>
+            <p>{updatedAt}</p>
           </div>
         </div>
 
         <DialogFooter className="flex flex-row items-center justify-end">
-          <Link href="/dashboard/passwords/edit">
+          <Link
+            href={{
+              pathname: "/dashboard/passwords/edit",
+              query: { id: _id },
+            }}
+          >
             <Button
               type="button"
               variant="default"

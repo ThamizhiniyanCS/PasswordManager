@@ -1,15 +1,8 @@
 import mongoose from "mongoose";
 
-export interface Passwords extends mongoose.Document {
-  user_id: string;
-  username: string;
-  password: string;
-  account_description: string;
-  password_score: number;
-  url: string;
-}
+import { passwordInterface } from "./typeDefinitions";
 
-const PasswordSchema = new mongoose.Schema<Passwords>(
+const PasswordSchema = new mongoose.Schema<passwordInterface>(
   {
     user_id: {
       type: String,
@@ -41,4 +34,4 @@ const PasswordSchema = new mongoose.Schema<Passwords>(
 );
 
 export default mongoose.models.Password ||
-  mongoose.model<Passwords>("Password", PasswordSchema);
+  mongoose.model<passwordInterface>("Password", PasswordSchema);

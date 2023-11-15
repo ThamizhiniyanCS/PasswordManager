@@ -2,13 +2,17 @@ import DashboardBreadCrumbs from "@/components/DashboardBreadCrumbs";
 import DashboardNavMobile from "@/components/DashboardNavMobile";
 import SearchBar from "@/components/SearchBar";
 import React from "react";
+import { getPasswords, getPasswordsSearch } from "@/lib/fetchData";
+import { searchPasswordType } from "@/lib/typeDefinitions";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const layout = async ({ children }: { children: React.ReactNode }) => {
+  const PASSWORDS: searchPasswordType[] = await getPasswordsSearch();
+
   return (
     <div className="w-full h-[calc(100vh-80px)] p-4">
       <DashboardBreadCrumbs />
-      <SearchBar />
-      <div className="w-full h-[calc(100vh-140px)]">{children}</div>
+      <SearchBar passwords={PASSWORDS} />
+      <div className="w-full h-[calc(100vh-270px)]">{children}</div>
       <DashboardNavMobile />
     </div>
   );
