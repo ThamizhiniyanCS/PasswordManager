@@ -11,9 +11,7 @@ import clsx from "clsx";
 // optional
 const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions);
 zxcvbnOptions.addMatcher("pwned", matcherPwned);
-
 import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "./ui/toast";
 
 const options = {
   // recommended
@@ -42,11 +40,18 @@ const usePasswordStrength = (password: string) => {
   return result;
 };
 
-type Props = { password: string };
+type Props = { password: string; setPasswordScore: (val: number) => void };
 
-export default function PasswordStrength({ password }: Props) {
+export default function PasswordStrength({
+  password,
+  setPasswordScore,
+}: Props) {
   const result = usePasswordStrength(password);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setPasswordScore(result?.score ? result.score + 1 : 0);
+  }, [result?.score, setPasswordScore]);
 
   return (
     <div className="mb-2 w-full">
@@ -75,7 +80,7 @@ export default function PasswordStrength({ password }: Props) {
                   variant: "default",
                   title: "For Your Info",
                   description:
-                    "These crack times are basend on Offline Fast Hashing, at a speed of 1e10 per second ",
+                    "These crack times are based on Offline Fast Hashing, at a speed of 1e10 per second ",
                 });
               }}
             >

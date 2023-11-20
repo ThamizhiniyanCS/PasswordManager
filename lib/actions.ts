@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ZodPasswordSchemaServer } from "./zodDefinitions";
 import { passwordType } from "./typeDefinitions";
+import mongoose from "mongoose";
 
 const CreatePassword = ZodPasswordSchemaServer.omit({});
 const UpdatePassword = ZodPasswordSchemaServer.omit({ user_id: true });
@@ -36,25 +37,34 @@ export const createPassword = async (formData: passwordType) => {
 };
 
 export const updatePassword = async (
-  password_id: string,
-  formData: FormData
+  formData: passwordType,
+  password_id: string
 ) => {
-  const { account_description, password, password_score, username, url } =
-    UpdatePassword.parse({
-      username: formData.get("username"),
-      password: formData.get("password"),
-      account_description: formData.get("account_description"),
-      password_score: formData.get("password_score"),
-      url: formData.get("url"),
-    });
+  const isValidId = mongoose.Types.ObjectId.isValid(password_id);
 
-  await passwordModel.findByIdAndUpdate(password_id, {
-    username,
-    password,
-    account_description,
-    password_score,
-    url,
-  });
+  if (isValidId) {
+    const parsedFormData = UpdatePassword.safeParse(formData);
+
+    if (parsedFormData.success === false) {
+      console.log(parsedFormData.error);
+      throw new Error("Invalid Form Data");
+    } else {
+      try {
+        await passwordModel.findByIdAndUpdate(password_id, {
+          username: parsedFormData.data.username,
+          password: parsedFormData.data.password,
+          account_description: parsedFormData.data.account_description,
+          password_score: parsedFormData.data.password_score,
+          url: parsedFormData.data.url,
+        });
+      } catch (error) {
+        console.log(error);
+        throw new Error("Failed to update password");
+      }
+    }
+  } else {
+    throw new Error("Invalid Password ID.");
+  }
 
   revalidatePath("/dashboard/passwords");
   redirect("/dashboard/passwords");

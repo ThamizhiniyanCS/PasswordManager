@@ -21,8 +21,10 @@ import { createPassword } from "@/lib/actions";
 import { passwordType } from "@/lib/typeDefinitions";
 import PasswordGenerator from "@/components/PasswordGenerator";
 
-const CreateForm = () => {
+const CreatePasswordForm = () => {
   const [password, setPassword] = useState("");
+  const [passwordScore, setPasswordScore] = useState(0);
+
   const form = useForm<z.infer<typeof ZodPasswordSchemaClient>>({
     resolver: zodResolver(ZodPasswordSchemaClient),
     defaultValues: {
@@ -38,7 +40,7 @@ const CreateForm = () => {
     // ✅ This will be type-safe and validated.
     let data: passwordType = {
       ...values,
-      password_score: 1,
+      password_score: passwordScore,
       user_id: "somethingSilly",
     };
     createPassword(data);
@@ -113,6 +115,7 @@ const CreateForm = () => {
           <PasswordGenerator
             password={password}
             setPassword={setPassword}
+            setPasswordScore={setPasswordScore}
             setFormValues={form.setValue}
           />
           <FormField
@@ -146,4 +149,4 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+export default CreatePasswordForm;

@@ -19,10 +19,11 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "./ui/slider";
 import { useState } from "react";
 import PasswordStrength from "./usePasswordStrength";
-import { UseFormSetValue, FieldValues } from "react-hook-form";
+import { UseFormSetValue } from "react-hook-form";
 type Props = {
   password: string;
   setPassword: (val: string) => void;
+  setPasswordScore: (val: number) => void;
   setFormValues: UseFormSetValue<{
     password: string;
     username: string;
@@ -31,7 +32,7 @@ type Props = {
   }>;
 };
 
-const PasswordGenerator = ({ password, setPassword, setFormValues }: Props) => {
+const PasswordGenerator = ({ password, setPassword, setFormValues, setPasswordScore }: Props) => {
   const { toast } = useToast();
   const [passwordLength, setPasswordLength] = useState(12);
   const [numbers, setNumbers] = useState(true);
@@ -95,7 +96,7 @@ const PasswordGenerator = ({ password, setPassword, setFormValues }: Props) => {
 
   return (
     <div className="w-full flex flex-col justify-start items-center">
-      <PasswordStrength password={password} />
+      <PasswordStrength password={password} setPasswordScore={setPasswordScore}/>
       <h3 className="w-full text-lg my-2 text-left">Password Generator</h3>
       <div className="w-full flex justify-evenly items-center">
         <Button

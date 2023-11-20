@@ -2,7 +2,7 @@ import DashboardBreadCrumbs from "@/components/DashboardBreadCrumbs";
 import DashboardNavMobile from "@/components/DashboardNavMobile";
 import SearchBar from "@/components/SearchBar";
 import React from "react";
-import { getPasswords, getPasswordsSearch } from "@/lib/fetchData";
+import { getPasswordsSearch } from "@/lib/fetchData";
 import { searchPasswordType } from "@/lib/typeDefinitions";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
