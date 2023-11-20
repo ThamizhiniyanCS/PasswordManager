@@ -3,6 +3,8 @@ import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPasswords } from "@/lib/fetchData";
 import { extendedPasswordType } from "@/lib/typeDefinitions";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const page = async () => {
   const PASSWORDS: extendedPasswordType[] = await getPasswords();
@@ -25,6 +27,13 @@ const page = async () => {
           />
         ))}
       </ScrollArea>
+      <Link href="/dashboard/passwords/create">
+        <Button className="absolute w-16 h-16 flex justify-centre items-center bg-primary right-10 bottom-24 rounded-full border border-white">
+          <span className="material-symbols-outlined text-6xl text-white">
+            add
+          </span>
+        </Button>
+      </Link>
     </div>
   );
 };

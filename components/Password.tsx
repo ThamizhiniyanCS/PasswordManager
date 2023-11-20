@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { deletePassword } from "@/lib/actions";
 
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
@@ -379,7 +380,10 @@ const Password = ({
                 <AlertDialogCancel className="rounded-full">
                   Cancel
                 </AlertDialogCancel>
-                <AlertDialogAction className="rounded-full bg-red-500">
+                <AlertDialogAction
+                  className="rounded-full bg-red-500"
+                  onClick={() => deletePassword(_id)}
+                >
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>

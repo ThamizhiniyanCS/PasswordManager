@@ -9,6 +9,15 @@ export interface passwordInterface extends mongoose.Document {
   url: string;
 }
 
+export interface passwordType {
+  user_id: string;
+  username: string;
+  password: string;
+  account_description: string;
+  password_score: number;
+  url?: string | undefined;
+}
+
 export interface extendedPasswordType {
   _id: string;
   user_id: string;
@@ -31,3 +40,12 @@ export interface userInterface extends mongoose.Document {
   name: string;
   password: string;
 }
+
+export type State = {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+};
