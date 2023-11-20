@@ -19,12 +19,19 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "./ui/slider";
 import { useState } from "react";
 import PasswordStrength from "./usePasswordStrength";
+import { UseFormSetValue, FieldValues } from "react-hook-form";
 type Props = {
   password: string;
   setPassword: (val: string) => void;
+  setFormValues: UseFormSetValue<{
+    password: string;
+    username: string;
+    account_description: string;
+    url?: string | undefined;
+  }>;
 };
 
-const PasswordGenerator = ({ password, setPassword }: Props) => {
+const PasswordGenerator = ({ password, setPassword, setFormValues }: Props) => {
   const { toast } = useToast();
   const [passwordLength, setPasswordLength] = useState(12);
   const [numbers, setNumbers] = useState(true);
@@ -83,6 +90,7 @@ const PasswordGenerator = ({ password, setPassword }: Props) => {
     });
 
     setPassword(gPassword);
+    setFormValues("password", gPassword);
   };
 
   return (

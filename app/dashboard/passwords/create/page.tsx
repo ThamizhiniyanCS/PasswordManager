@@ -20,13 +20,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { createPassword } from "@/lib/actions";
 import { passwordType } from "@/lib/typeDefinitions";
 import PasswordGenerator from "@/components/PasswordGenerator";
-import { ZxcvbnResult } from "@zxcvbn-ts/core";
 
 const CreateForm = () => {
   const [password, setPassword] = useState("");
-  const [passwordStrength, setPasswordStrength] =
-    useState<ZxcvbnResult | null>();
-
   const form = useForm<z.infer<typeof ZodPasswordSchemaClient>>({
     resolver: zodResolver(ZodPasswordSchemaClient),
     defaultValues: {
@@ -104,6 +100,7 @@ const CreateForm = () => {
                     {...field}
                     onChange={(event) => {
                       setPassword(event.target.value);
+                      form.setValue("password", event.target.value);
                     }}
                     value={password}
                   />
@@ -116,6 +113,7 @@ const CreateForm = () => {
           <PasswordGenerator
             password={password}
             setPassword={setPassword}
+            setFormValues={form.setValue}
           />
           <FormField
             control={form.control}
