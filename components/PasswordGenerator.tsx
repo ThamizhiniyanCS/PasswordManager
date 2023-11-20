@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "./ui/toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import generator from "generate-password";
 
 import {
   Dialog,
@@ -12,48 +13,24 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "./ui/slider";
 import { useState } from "react";
-import usePasswordStrength from "./usePasswordStrength";
-
-type Props = { password: string; setPassword: (val: string) => void };
+import PasswordStrength from "./usePasswordStrength";
+type Props = {
+  password: string;
+  setPassword: (val: string) => void;
+};
 
 const PasswordGenerator = ({ password, setPassword }: Props) => {
   const { toast } = useToast();
-
-  //   console.log(usePasswordStrength(password)?.score);
-
   const [passwordLength, setPasswordLength] = useState(12);
-
-  const [characters, setCharacters] = useState([
-    "!",
-    "#",
-    "$",
-    "%",
-    "&",
-    "`",
-    "'",
-    '"',
-  ]);
-
-  //   # $ % ^ & * () [] {} ! @ ~ + - | / \
-  const specialCharacters = "!@#$%^&*()_+-={}[]\\|;:,<.>/?";
-  let something = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-
-//   const [numbers, setNumbers] = useState(true);
-
-//   const [uppercase, setUppercase] = useState(true);
-//   const [lowercase, setLowercase] = useState(true);
-//   const [symbols, setSymbols] = useState(true);
-//   const [numbersAndSymbols, setNumbersAndSymbols] = useState(true);
-//   const [uppercaseAndSymbols, setUppercaseAndSymbols] = useState(true);
-//   const [uppercaseAndNumbers, setUppercaseAndNumbers] = useState(true);
-//   const [lowercaseAndSymbols, setLowercaseAndSymbols] = useState(true);
-//   const [lowercaseAndNumbers, setLowercaseAndNumbers] = useState(true);
-
+  const [numbers, setNumbers] = useState(true);
+  const [symbols, setSymbols] = useState(true);
+  const [uppercase, setUppercase] = useState(true);
+  const [lowercase, setLowercase] = useState(true);
   const copyToClipboard = (contentToCopy: string, name: string) => {
     if (contentToCopy === "") {
       toast({
@@ -96,10 +73,29 @@ const PasswordGenerator = ({ password, setPassword }: Props) => {
     }
   };
 
+  const generatePassword = () => {
+    const gPassword = generator.generate({
+      length: passwordLength,
+      numbers: numbers,
+      symbols: symbols,
+      uppercase: uppercase,
+      lowercase: lowercase,
+    });
+
+    setPassword(gPassword);
+  };
+
   return (
     <div className="w-full flex flex-col justify-start items-center">
+      <PasswordStrength password={password} />
+      <h3 className="w-full text-lg my-2 text-left">Password Generator</h3>
       <div className="w-full flex justify-evenly items-center">
-        <Button variant="default" size="icon" type="button">
+        <Button
+          variant="default"
+          size="icon"
+          type="button"
+          onClick={generatePassword}
+        >
           <span className="material-symbols-outlined">casino</span>
         </Button>
         <Button
@@ -130,17 +126,99 @@ const PasswordGenerator = ({ password, setPassword }: Props) => {
                 {passwordLength}
               </div>
               <Slider
-                defaultValue={[12]}
+                defaultValue={[passwordLength]}
                 max={50}
                 step={1}
                 onValueChange={(value) => setPasswordLength(value[0])}
                 className="ml-2"
+                value={[passwordLength]}
               />
             </div>
 
-            <p>Included Special Characters</p>
+            <div className="w-full flex justify-start items-center">
+              <Checkbox
+                id="numbers"
+                className="mx-2"
+                onCheckedChange={(value) => setNumbers(value as boolean)}
+                checked={numbers}
+              />
+              <Label
+                htmlFor="numbers"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Include Numbers
+              </Label>
+            </div>
+
+            <div className="w-full flex justify-start items-center">
+              <Checkbox
+                id="symbols"
+                className="mx-2"
+                onCheckedChange={(value) => setSymbols(value as boolean)}
+                checked={symbols}
+              />
+              <Label
+                htmlFor="symbols"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Include Symbols
+              </Label>
+            </div>
+
+            <div className="w-full flex justify-start items-center">
+              <Checkbox
+                id="uppercase"
+                className="mx-2"
+                onCheckedChange={(value) => setUppercase(value as boolean)}
+                checked={uppercase}
+              />
+              <Label
+                htmlFor="uppercase"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Include Uppercase Letters
+              </Label>
+            </div>
+
+            <div className="w-full flex justify-start items-center">
+              <Checkbox
+                id="lowercase"
+                className="mx-2"
+                onCheckedChange={(value) => setLowercase(value as boolean)}
+                checked={lowercase}
+              />
+              <Label
+                htmlFor="lowercase"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Include Lowercase Letters
+              </Label>
+            </div>
+
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="rounded-full"
+                >
+                  Close
+                </Button>
+              </DialogClose>
+
+              <Button
+                className="rounded-full mb-2"
+                type="button"
+                onClick={() => {
+                  setPasswordLength(12);
+                  setNumbers(true);
+                  setSymbols(true);
+                  setUppercase(true);
+                  setLowercase(true);
+                }}
+              >
+                Reset Changes
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

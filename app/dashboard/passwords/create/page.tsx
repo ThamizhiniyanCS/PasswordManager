@@ -20,9 +20,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { createPassword } from "@/lib/actions";
 import { passwordType } from "@/lib/typeDefinitions";
 import PasswordGenerator from "@/components/PasswordGenerator";
+import { ZxcvbnResult } from "@zxcvbn-ts/core";
 
 const CreateForm = () => {
   const [password, setPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] =
+    useState<ZxcvbnResult | null>();
 
   const form = useForm<z.infer<typeof ZodPasswordSchemaClient>>({
     resolver: zodResolver(ZodPasswordSchemaClient),
@@ -47,6 +50,7 @@ const CreateForm = () => {
 
   return (
     <ScrollArea className="w-full h-full">
+      <h2 className="text-2xl my-4">Create Password</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-1">
           <FormField
@@ -98,7 +102,9 @@ const CreateForm = () => {
                     className="rounded-full"
                     placeholder="Password"
                     {...field}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
                     value={password}
                   />
                 </FormControl>
@@ -107,7 +113,10 @@ const CreateForm = () => {
               </FormItem>
             )}
           />
-          <PasswordGenerator password={password} setPassword={setPassword} />
+          <PasswordGenerator
+            password={password}
+            setPassword={setPassword}
+          />
           <FormField
             control={form.control}
             name="url"
@@ -128,7 +137,11 @@ const CreateForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <div className="w-full flex justify-center items-center">
+            <Button type="submit" className="rounded-full" size="lg">
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
     </ScrollArea>
