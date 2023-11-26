@@ -67,7 +67,11 @@ const Password = ({
 
   useEffect(() => {
     const urlparams = new URLSearchParams(searchParams);
-    if (urlparams.has("id") && urlparams.get("id") === _id) {
+    if (
+      urlparams.has("id") &&
+      urlparams.get("id") === _id &&
+      window.innerWidth < 1024
+    ) {
       setDialogState(true);
     } else {
       setDialogState(false);
@@ -110,7 +114,33 @@ const Password = ({
     >
       <Card className="my-2">
         <div className="w-full flex justify-between items-center">
-          <DialogTrigger className="w-[calc(100%-64px)] border-none">
+          <CardContent
+            className="w-[calc(100%-64px)] hidden lg:flex flex-col items-start p-0 pl-2 h-36 justify-evenly rounded-l-xl cursor-pointer"
+            onClick={() => idParam__Handler(_id)}
+          >
+            <div className="h-10 flex flex-col justify-evenly items-start">
+              <CardDescription className="text-xs ">
+                Account Description
+              </CardDescription>
+              <CardDescription className="text-primary text-md">
+                {account_description}
+              </CardDescription>
+            </div>
+            <div className="h-10 flex flex-col justify-evenly items-start">
+              <CardDescription className="text-xs ">Username</CardDescription>
+              <CardDescription className="text-primary text-md">
+                {username}
+              </CardDescription>
+            </div>
+            <div className="h-10 flex flex-col justify-evenly items-start">
+              <CardDescription className="text-xs ">Password</CardDescription>
+              <CardDescription className="text-primary text-md">
+                *******
+              </CardDescription>
+            </div>
+          </CardContent>
+
+          <DialogTrigger className="w-[calc(100%-64px)] border-none lg:hidden">
             <CardContent
               className="w-full flex flex-col items-start p-0 pl-2 h-36 justify-evenly rounded-l-xl"
               onClick={() => idParam__Handler(_id)}
@@ -200,7 +230,7 @@ const Password = ({
           </div>
         </div>
       </Card>
-      <DialogContent className="w-[90%] max-w-[90vw] rounded-xl">
+      <DialogContent className="w-[90%] max-w-[625px] rounded-xl lg:hidden">
         <DialogHeader>
           <DialogTitle>Details</DialogTitle>
           <DialogDescription>{account_description}</DialogDescription>

@@ -1,6 +1,7 @@
 import React from "react";
 import { ModeToggle } from "./ModeToggle";
 import SheetNavMobile from "./SheetNavMobile";
+import { NavigationMenuDesktop } from "./NavigationMenuDesktop";
 
 const NavBar = () => {
   const linksDesktop = [
@@ -22,10 +23,11 @@ const NavBar = () => {
 
   return (
     <div className="w-screen h-20 flex items-center justify-between p-4">
-      <div>
+      <div className="md:w-[30%] max-w-[200px] flex jusitfy-center items-center">
         <h1 className="text-xl">Password Manager</h1>
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center md:justify-between md:w-[70%] max-w-[600px]">
+        <NavigationMenuDesktop />
         <ModeToggle />
         <SheetNavMobile />
       </div>

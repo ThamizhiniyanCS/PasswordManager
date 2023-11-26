@@ -18,7 +18,7 @@ const DashboardNavMobile = () => {
   ];
 
   return (
-    <div className="fixed left-0 bottom-0 w-screen h-16 flex justify-evenly items-center rounded-md bg-secondary p-1">
+    <div className="fixed left-0 bottom-0 w-screen h-16 flex justify-evenly items-center rounded-md bg-secondary p-1 md:hidden">
       {links.map((link) => (
         <div key={link.path}>
           <Link href={link.path}>

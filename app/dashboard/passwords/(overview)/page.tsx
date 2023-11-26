@@ -5,13 +5,20 @@ import { getPasswords } from "@/lib/fetchData";
 import { extendedPasswordType } from "@/lib/typeDefinitions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import clsx from "clsx";
 
-const page = async () => {
+type Props = {
+  searchParams: {
+    id: string;
+  };
+};
+
+const page = async ({ searchParams }: Props) => {
   const PASSWORDS: extendedPasswordType[] = await getPasswords();
 
   return (
-    <div className="w-full h-full">
-      <ScrollArea className="h-full w-full rounded-xl border p-2">
+    <div className="w-full h-full flex ">
+      <ScrollArea className="h-full w-full rounded-xl border p-2 lg:w-[50%]">
         {PASSWORDS.map((password) => (
           <Password
             key={password._id}
@@ -27,6 +34,9 @@ const page = async () => {
           />
         ))}
       </ScrollArea>
+      <ScrollArea
+        className={clsx("hidden lg:flex flex-col justify-start w-50%")}
+      ></ScrollArea>
       <Link href="/dashboard/passwords/create">
         <Button className="absolute w-16 h-16 flex justify-centre items-center bg-primary right-10 bottom-24 rounded-full border border-white">
           <span className="material-symbols-outlined text-6xl text-white">
