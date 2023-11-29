@@ -38,7 +38,7 @@ const PasswordCard = () => {
   );
 };
 
-const loading = () => {
+const PasswordsSkeleton = () => {
   const indexes = [1, 2, 3, 4];
   return (
     <div className="overflow-hidden">
@@ -49,4 +49,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default PasswordsSkeleton;

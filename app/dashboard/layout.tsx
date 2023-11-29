@@ -17,7 +17,9 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
       <div className="w-full md:w-[calc(100vw-250px)]">
         <DashboardBreadCrumbs />
         <SearchBar passwords={PASSWORDS} />
-        <div className="w-full h-[calc(100vh-270px)]">{children}</div>
+        <div className="w-full h-[calc(100vh-270px)] lg:h-[calc(100vh-206px)]">
+          {children}
+        </div>
         <DashboardNavMobile />
       </div>
     </div>
