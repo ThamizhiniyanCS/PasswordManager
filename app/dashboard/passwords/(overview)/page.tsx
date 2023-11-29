@@ -6,8 +6,6 @@ import { extendedPasswordType } from "@/lib/typeDefinitions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PasswordDetails from "@/components/PasswordDetails";
-import { Suspense } from "react";
-import PasswordsSkeleton from "@/components/skeletons/PasswordsSkeleton";
 
 type Props = {
   searchParams: {
@@ -24,24 +22,22 @@ const page = async ({ searchParams }: Props) => {
 
   return (
     <div className="w-full h-full flex justify-between">
-      <Suspense fallback={<PasswordsSkeleton />}>
-        <ScrollArea className="h-full w-full rounded-xl border p-2 lg:w-[49%]">
-          {PASSWORDS.map((password) => (
-            <Password
-              key={password._id}
-              _id={password._id}
-              account_description={password.account_description}
-              user_id={password.user_id}
-              username={password.username}
-              password={password.password}
-              password_score={password.password_score}
-              url={password.url}
-              createdAt={password.createdAt}
-              updatedAt={password.updatedAt}
-            />
-          ))}
-        </ScrollArea>
-      </Suspense>
+      <ScrollArea className="h-full w-full rounded-xl border p-2 lg:w-[49%]">
+        {PASSWORDS.map((password) => (
+          <Password
+            key={password._id}
+            _id={password._id}
+            account_description={password.account_description}
+            user_id={password.user_id}
+            username={password.username}
+            password={password.password}
+            password_score={password.password_score}
+            url={password.url}
+            createdAt={password.createdAt}
+            updatedAt={password.updatedAt}
+          />
+        ))}
+      </ScrollArea>
 
       {details ? (
         <PasswordDetails details={details as extendedPasswordType} />

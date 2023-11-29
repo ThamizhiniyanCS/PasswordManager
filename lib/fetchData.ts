@@ -37,6 +37,9 @@ export const getPassword = async (id: string) => {
 export const getPasswords = async () => {
   unstable_noStore();
   try {
+    console.log("Getting passwords");
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("After 3 seconds");
     await dbConnect();
     const fetchedPasswords = await passwordModel.find({}).lean().exec();
     const reducedPasswords: extendedPasswordType[] = fetchedPasswords.map(
