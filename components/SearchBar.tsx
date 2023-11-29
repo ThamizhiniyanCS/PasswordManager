@@ -61,13 +61,14 @@ const SearchBar = ({ passwords }: Props) => {
           <CommandGroup heading="Passwords">
             {passwords.map((password) => (
               <Link
-                key={`${password.id}`}
-                href={{
-                  pathname: "/dashboard/passwords",
-                  query: { id: password.id },
-                }}
+              key={`${password.id}`}
+              href={{
+                pathname: "/dashboard/passwords",
+                query: { id: password.id },
+              }}
+              onClick={() => setOpen(false)}
               >
-                <CommandItem className="bg-transparent">
+                <CommandItem className="bg-transparent cursor-pointer">
                   <span className="full flex justify-start items-center h-5">
                     <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
                       password
@@ -81,8 +82,11 @@ const SearchBar = ({ passwords }: Props) => {
           <CommandSeparator />
 
           <CommandGroup heading="Recovery Keys">
-            <Link href={`dashboard/recoverykeys?id=1`}>
-              <CommandItem className="bg-transparent">
+            <Link
+              href={`dashboard/recoverykeys?id=1`}
+              onClick={() => setOpen(false)}
+            >
+              <CommandItem className="bg-transparent cursor-pointer">
                 <span className="full flex justify-start items-center h-5">
                   <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
                     key
@@ -95,8 +99,8 @@ const SearchBar = ({ passwords }: Props) => {
           <CommandSeparator />
 
           <CommandGroup heading="Cards">
-            <Link href={`/dashboard/cards?id=1`}>
-              <CommandItem className="bg-transparent">
+            <Link href={`/dashboard/cards?id=1`} onClick={() => setOpen(false)}>
+              <CommandItem className="bg-transparent cursor-pointer">
                 <span className="full flex justify-start items-center h-5">
                   <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
                     credit_card
@@ -109,8 +113,8 @@ const SearchBar = ({ passwords }: Props) => {
           <CommandSeparator />
 
           <CommandGroup heading="Notes">
-            <Link href={`/dashboard/notes?id=1`}>
-              <CommandItem className="bg-transparent">
+            <Link href={`/dashboard/notes?id=1`} onClick={() => setOpen(false)}>
+              <CommandItem className="bg-transparent cursor-pointer">
                 <span className="full flex justify-start items-center h-5">
                   <span className="material-symbols-outlined w-5 h-5 mr-3 text-primary">
                     notes
