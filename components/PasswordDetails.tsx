@@ -262,6 +262,7 @@ const PasswordDetails = ({ details }: Props) => {
 
       <div className="w-full flex justify-between my-2">
         <Link
+          className="h-20 w-[49%]"
           href={{
             pathname: "/dashboard/passwords/edit",
             query: { id: details._id },
@@ -270,7 +271,7 @@ const PasswordDetails = ({ details }: Props) => {
           <Button
             type="button"
             variant="default"
-            className="h-20 w-[49%] flex items-center justify-center text-xl rounded-full my-4 "
+            className="h-full w-full flex items-center justify-center text-xl rounded-full my-4 "
           >
             <span className="material-symbols-outlined">edit</span>
             Edit

@@ -36,8 +36,6 @@ const CreatePasswordForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof ZodPasswordSchemaClient>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     let data: passwordType = {
       ...values,
       password_score: passwordScore,
@@ -138,7 +136,7 @@ const CreatePasswordForm = () => {
               </FormItem>
             )}
           />
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex justify-start items-center">
             <Button type="submit" className="rounded-full" size="lg">
               Submit
             </Button>
