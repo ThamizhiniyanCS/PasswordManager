@@ -1,20 +1,14 @@
-// "use client";
-
 import React from "react";
-// import { Player } from "@lottiefiles/react-lottie-player";
-// import lottieBlocks from "../public/loadingBlocks.json";
+import Image from "next/image";
+import blocksGIF from "../app/blocks.gif";
+import { Skeleton } from "./ui/skeleton";
 
 const CommonLoading = ({ textToDisplay }: { textToDisplay: string }) => {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center ">
-      {/* <Player
-        autoplay
-        loop
-        src={lottieBlocks}
-        style={{ height: "300px", width: "300px" }}
-      /> */}
+    <Skeleton className="w-full h-full flex flex-col justify-center items-center ">
+      <Image alt="Loading GIF" src={blocksGIF} width="150" height="150" />
       <p className="text-white text-xl">{textToDisplay}</p>
-    </div>
+    </Skeleton>
   );
 };
 
