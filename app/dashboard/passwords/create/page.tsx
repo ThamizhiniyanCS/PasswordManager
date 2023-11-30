@@ -140,6 +140,16 @@ const CreatePasswordForm = () => {
             <Button type="submit" className="rounded-full" size="lg">
               Submit
             </Button>
+            <Button
+              type="button"
+              className="rounded-full ml-2"
+              size="lg"
+              variant="outline"
+              onClick={() => form.reset()}
+            >
+              <span className="material-symbols-outlined">restart_alt</span>
+              Reset Form
+            </Button>
           </div>
         </form>
       </Form>

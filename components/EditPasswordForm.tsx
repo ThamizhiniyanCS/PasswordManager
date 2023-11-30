@@ -65,7 +65,7 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
       account_description: values.account_description,
       username: values.username,
       password: values.password,
-      password_score: passwordScore + 1,
+      password_score: passwordScore,
       user_id: "something",
       url: values.url,
     };
@@ -235,6 +235,16 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
                 Cancel
               </Button>
             </Link>
+            <Button
+              type="button"
+              className="rounded-full ml-2"
+              size="lg"
+              variant="outline"
+              onClick={() => form.reset()}
+            >
+              <span className="material-symbols-outlined">restart_alt</span>
+              Reset Form
+            </Button>
           </div>
         </form>
       </Form>
