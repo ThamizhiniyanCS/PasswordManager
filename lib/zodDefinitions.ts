@@ -42,3 +42,31 @@ export const ZodPasswordSchemaServer = z.object({
     .optional()
     .or(z.literal("")),
 });
+
+export const ZodUserSchema = z.object({
+  email_id: z.string().email({ message: "Enter a Valid Email ID." }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(60, {
+      message: "Name cannot be more than 60 characters.",
+    }),
+  password: z
+    .string()
+    .min(12, { message: "Password must be 12 or more characters long" })
+    .max(50, { message: "Password must be 50 or fewer characters long" }),
+});
+
+export const ZodEmailIdSchema = z
+  .string()
+  .email({ message: "Enter a Valid Email ID." });
+
+export const ZodLoginSchema = z.object({
+  email_id: z.string().email({ message: "Enter a Valid Email ID." }),
+  password: z
+    .string()
+    .min(12, { message: "Password must be 12 or more characters long" })
+    .max(50, { message: "Password must be 50 or fewer characters long" }),
+});

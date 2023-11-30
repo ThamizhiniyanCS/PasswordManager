@@ -49,3 +49,21 @@ export type State = {
   };
   message?: string | null;
 };
+
+export interface User {
+  _id: string;
+  email_id: string;
+  name: string;
+  password: string;
+}
+
+export interface CreateUser {
+  email_id: string;
+  name: string;
+  password: string;
+}
+
+export interface authenticateUser {
+  email_id: string;
+  password: string;
+}

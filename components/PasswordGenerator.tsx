@@ -121,7 +121,7 @@ const PasswordGenerator = ({ password, setPassword, setFormValues, setPasswordSc
               <span className="material-symbols-outlined">tune</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-[90%] max-w-[90vw] rounded-xl">
+          <DialogContent className="w-[90%] max-w-[500px] rounded-xl">
             <DialogHeader>
               <DialogTitle>Options</DialogTitle>
               <DialogDescription>

@@ -2,11 +2,14 @@ import passwordModel from "./passwordModel";
 import { unstable_noStore } from "next/cache";
 import dbConnect from "./db-connect";
 import {
+  User,
   extendedPasswordType,
   passwordType,
   searchPasswordType,
 } from "./typeDefinitions";
 import mongoose from "mongoose";
+import { ZodEmailIdSchema } from "./zodDefinitions";
+import userModel from "./userModel";
 
 export const getPassword = async (id: string) => {
   unstable_noStore();
@@ -76,5 +79,31 @@ export const getPasswordsSearch = async () => {
   } catch (error) {
     console.log("Database Error", error);
     throw new Error("Failed to Fetch the Data");
+  }
+};
+
+export const getUser = async (email_id: string) => {
+  unstable_noStore();
+
+  const isValidEmail = ZodEmailIdSchema.safeParse(email_id);
+
+  if (!isValidEmail) {
+    try {
+      const userData = await userModel.findOne({ email_id });
+
+      const reducedUserData: User = {
+        _id: `${userData._id}`,
+        email_id: userData.email_id,
+        name: userData.name,
+        password: userData.password,
+      };
+
+      return reducedUserData;
+    } catch (error) {
+      console.log("Database Error", error);
+      throw new Error("Failed to Fetch the Data");
+    }
+  } else {
+    throw new Error("Invalid Email ID.");
   }
 };
