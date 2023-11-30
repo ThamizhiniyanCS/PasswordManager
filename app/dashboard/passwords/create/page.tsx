@@ -145,7 +145,11 @@ const CreatePasswordForm = () => {
               className="rounded-full ml-2"
               size="lg"
               variant="outline"
-              onClick={() => form.reset()}
+              onClick={() => {
+                form.reset();
+                setPassword("");
+                setPasswordScore(0);
+              }}
             >
               <span className="material-symbols-outlined">restart_alt</span>
               Reset Form

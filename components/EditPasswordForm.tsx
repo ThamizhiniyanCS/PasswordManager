@@ -36,11 +36,15 @@ type errors = {
   password_score?: string[] | undefined;
 };
 
-const EditFormErrors = () => {
+const SubmitButton = () => {
   const { pending, data, method, action } = useFormStatus();
   // console.log(pending, data, method, action);
 
-  return <></>;
+  return (
+    <Button type="submit" className="rounded-full" size="lg" disabled={pending}>
+      Submit
+    </Button>
+  );
 };
 
 const EditPasswordForm = ({ currentPassword, id }: Props) => {
@@ -71,7 +75,7 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
     };
 
     updatePassword(data, id).then((result) => {
-      if (result.errors && result.message) {
+      if (result && result.errors && result.message) {
         const errors: errors = result.errors;
 
         toast({
@@ -133,7 +137,6 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
       <h2 className="text-2xl my-4">Edit Password</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-1">
-          <EditFormErrors />
           <FormField
             control={form.control}
             name="account_description"
@@ -222,9 +225,7 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
             )}
           />
           <div className="w-full flex justify-start items-center">
-            <Button type="submit" className="rounded-full" size="lg">
-              Submit
-            </Button>
+            <SubmitButton />
             <Link href="/dashboard/passwords/" className="ml-2">
               <Button
                 type="button"
@@ -240,7 +241,11 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
               className="rounded-full ml-2"
               size="lg"
               variant="outline"
-              onClick={() => form.reset()}
+              onClick={() => {
+                form.reset();
+                setPassword(currentPassword.password);
+                setPasswordScore(currentPassword.password_score);
+              }}
             >
               <span className="material-symbols-outlined">restart_alt</span>
               Reset Form

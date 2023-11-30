@@ -48,8 +48,8 @@ export const getPasswords = async () => {
         password: password.password,
         password_score: password.password_score,
         url: password.url,
-        createdAt: password.createdAt.toString(),
-        updatedAt: password.updatedAt.toString(),
+        createdAt: password.createdAt.toLocaleDateString(),
+        updatedAt: password.updatedAt.toLocaleDateString(),
       })
     );
 
