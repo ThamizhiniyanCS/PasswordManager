@@ -11,7 +11,7 @@ export default async function NotFound() {
         <Link href="/">
           <Button
             variant="default"
-            className="w-32 h-32 flex flex-col justify-center items-center text-white rounded-l-full hover:mr-4"
+            className="w-14 h-14 lg:w-32 lg:h-32 flex flex-col justify-center items-center text-white rounded-l-full hover:mr-4"
           >
             <span className="material-symbols-outlined">home</span>
             Home
@@ -20,7 +20,7 @@ export default async function NotFound() {
         <Link href="/dashboard">
           <Button
             variant="default"
-            className="w-32 h-32 flex flex-col justify-center items-center text-white hover:mx-4 rounded-none"
+            className="w-14 h-14 lg:w-32 lg:h-32 flex flex-col justify-center items-center text-white hover:mx-4 rounded-none"
           >
             <span className="material-symbols-outlined">dashboard</span>
             Dashboard
@@ -29,7 +29,7 @@ export default async function NotFound() {
         <Link href="/login">
           <Button
             variant="default"
-            className="w-32 h-32 flex flex-col justify-center items-center text-white hover:mx-4 rounded-none"
+            className="w-14 h-14 lg:w-32 lg:h-32 flex flex-col justify-center items-center text-white hover:mx-4 rounded-none"
           >
             <span className="material-symbols-outlined">login</span>
             Login
@@ -38,7 +38,7 @@ export default async function NotFound() {
         <Link href="/signup">
           <Button
             variant="default"
-            className="w-32 h-32 flex flex-col justify-center items-center text-white rounded-r-full hover:ml-4"
+            className="w-14 h-14 lg:w-32 lg:h-32 flex flex-col justify-center items-center text-white rounded-r-full hover:ml-4"
           >
             <span className="material-symbols-outlined">app_registration</span>
             SignUp
