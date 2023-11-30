@@ -20,16 +20,25 @@ import { updatePassword } from "@/lib/actions";
 import { passwordType } from "@/lib/typeDefinitions";
 import PasswordGenerator from "@/components/PasswordGenerator";
 import Link from "next/link";
-import { useFormStatus, useFormState } from "react-dom";
+import { useFormStatus } from "react-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   currentPassword: passwordType;
   id: string;
 };
 
+type errors = {
+  password?: string[] | undefined;
+  username?: string[] | undefined;
+  account_description?: string[] | undefined;
+  url?: string[] | undefined;
+  password_score?: string[] | undefined;
+};
+
 const EditFormErrors = () => {
   const { pending, data, method, action } = useFormStatus();
-  console.log(pending, data, method, action);
+  // console.log(pending, data, method, action);
 
   return <></>;
 };
@@ -39,9 +48,7 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
   const [passwordScore, setPasswordScore] = useState(
     currentPassword.password_score
   );
-
-  // const initialState = { message: null, errors: {} };
-  // const [state, dispatch] = useFormState(updatePassword, initialState);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof ZodPasswordSchemaClient>>({
     resolver: zodResolver(ZodPasswordSchemaClient),
@@ -62,7 +69,63 @@ const EditPasswordForm = ({ currentPassword, id }: Props) => {
       user_id: "something",
       url: values.url,
     };
-    updatePassword(data, id);
+
+    updatePassword(data, id).then((result) => {
+      if (result.errors && result.message) {
+        const errors: errors = result.errors;
+
+        toast({
+          variant: "destructive",
+          title: "Invalid Data.",
+          description: result.message,
+        });
+
+        errors.account_description &&
+          errors.account_description.forEach((error) =>
+            toast({
+              variant: "destructive",
+              title: "Invalid Input: Account Description",
+              description: error,
+            })
+          );
+
+        errors.username &&
+          errors.username.forEach((error) =>
+            toast({
+              variant: "destructive",
+              title: "Invalid Input: Username",
+              description: error,
+            })
+          );
+
+        errors.password &&
+          errors.password.forEach((error) =>
+            toast({
+              variant: "destructive",
+              title: "Invalid Input: Password",
+              description: error,
+            })
+          );
+
+        errors.password_score &&
+          errors.password_score.forEach((error) =>
+            toast({
+              variant: "destructive",
+              title: "Invalid Input: Password Score",
+              description: error,
+            })
+          );
+
+        errors.url &&
+          errors.url.forEach((error) =>
+            toast({
+              variant: "destructive",
+              title: "Invalid Input: Website URL",
+              description: error,
+            })
+          );
+      }
+    });
   }
 
   return (

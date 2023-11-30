@@ -10,18 +10,6 @@ import mongoose from "mongoose";
 const CreatePassword = ZodPasswordSchemaServer.omit({});
 const UpdatePassword = ZodPasswordSchemaServer.omit({ user_id: true });
 
-export type State = {
-  errors?: {
-    user_id?: string[];
-    username?: string[];
-    password?: string[];
-    account_description?: string[];
-    passwordScore?: string[];
-    url?: string[];
-  };
-  message?: string | null;
-};
-
 export const createPassword = async (formData: passwordType) => {
   const parsedFormData = CreatePassword.safeParse(formData);
 
@@ -49,7 +37,6 @@ export const createPassword = async (formData: passwordType) => {
 };
 
 export const updatePassword = async (
-  // prevState: State,
   formData: passwordType,
   password_id: string
 ) => {
